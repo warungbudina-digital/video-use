@@ -44,8 +44,10 @@ import tempfile
 from pathlib import Path
 
 VIDEO_EXTS = {".mp4", ".mov", ".mkv", ".webm", ".m4v", ".avi", ".ts", ".flv"}
-# whisper.cpp special tokens: [_BEG_], [_TT_123], [_SOT_], [_EOT_], [BLANK_AUDIO], (music) markers...
-SPECIAL_TOK = re.compile(r"^(\[_.*_\]|\[[A-Z_]+\])$")
+# whisper.cpp special tokens: [_BEG_], [_TT_525] (timestamp tokens end in digits,
+# not _]), [_SOT_], [_EOT_], [BLANK_AUDIO], (music) markers... Match any [_...]
+# bracket and any all-caps/underscore bracket; real words are never bracketed so.
+SPECIAL_TOK = re.compile(r"^(\[_.*\]|\[[A-Z_]+\])$")
 # extra flags for whisper (e.g. "--dtw base.en") via env, kept out of the arg surface
 WHISPER_EXTRA = os.environ.get("WHISPER_EXTRA", "").split()
 
